@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forza Buttplug Controller</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #181c20;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #23272b;
+      padding: 1.2rem 2rem;
+      box-shadow: 0 2px 8px #0003;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 1.7rem;
+      letter-spacing: 1px;
+    }
+    .exit-btn {
+      background: #ff3860;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.6rem 1.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px #0002;
+    }
+    .exit-btn:hover {
+      background: #ff1744;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 80vh;
+      padding: 2rem 0 3rem 0;
+    }
+    .section {
+      background: #23272b;
+      border-radius: 10px;
+      padding: 1.5rem 2rem;
+      margin: 1.2rem 0;
+      width: 100%;
+      max-width: 500px;
+      box-sizing: border-box;
+      box-shadow: 0 2px 8px #0002;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    select, input[type=range] {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border-radius: 4px;
+      border: none;
+      font-size: 1rem;
+      background: #181c20;
+      color: #fff;
+    }
+    .slider-value {
+      text-align: right;
+      margin-bottom: 1rem;
+      color: #aaa;
+    }
+    .live-data {
+      font-family: monospace;
+      background: #181c20;
+      padding: 1rem;
+      border-radius: 6px;
+      margin-top: 1rem;
+      color: #0ff;
+      font-size: 1.1rem;
+      min-height: 3.5em;
+      white-space: pre-line;
+    }
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    button {
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      background: #0ff;
+      color: #181c20;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px #0002;
+    }
+    button:disabled {
+      background: #444;
+      color: #888;
+      cursor: not-allowed;
+    }
+    button:hover:not(:disabled) {
+      background: #00e6e6;
+    }
+    .notification {
+      position: fixed;
+      left: 50%;
+      bottom: 2.5rem;
+      transform: translateX(-50%);
+      min-width: 300px;
+      max-width: 90vw;
+      padding: 1.2rem 2rem;
+      background: #ff3860;
+      color: #fff;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      box-shadow: 0 4px 16px #0005;
+      display: none;
+      z-index: 1000;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+    .notification.show {
+      display: block;
+      animation: fadeIn 0.2s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Forza Buttplug Controller</h1>
+    <button class="exit-btn" id="exit-btn">Exit</button>
+  </div>
+  <div class="container">
+    <div class="section">
+      <div id="device-status">Device status: <span id="device-status-value">Disconnected</span></div>
+      <label for="device-select">Select Device</label>
+      <select id="device-select" disabled>
+        <option>Loading...</option>
+      </select>
+      <button id="refresh-devices">Refresh Devices</button>
+    </div>
+
+    <div class="section">
+      <label for="mapping-select">Telemetry Mapping</label>
+      <select id="mapping-select">
+        <option value="rpm">RPM (Engine)</option>
+        <option value="rumble-average">Rumble (Wheels)</option>
+        <option value="speed">Speed</option>
+        <option value="power">Power</option>
+        <option value="torque">Torque</option>
+        <option value="brake">Brake Pedal</option>
+        <option value="accel">Accel Pedal</option>
+      </select>
+      <label for="max-vibration">Max Vibration</label>
+      <input type="range" id="max-vibration" min="1" max="20" value="20">
+      <div class="slider-value">Value: <span id="max-vibration-value">20</span></div>
+    </div>
+
+    <div class="section">
+      <div class="button-row">
+        <button id="start-btn">Start</button>
+        <button id="stop-btn" disabled>Stop</button>
+      </div>
+      <div class="live-data" id="live-data">Live telemetry and vibration will appear here.</div>
+    </div>
+  </div>
+
+  <div class="notification" id="notification"></div>
+
+  <script src="renderer.js"></script>
+</body>
+</html> 
